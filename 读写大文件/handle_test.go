@@ -72,3 +72,24 @@ func BufHandle(filePath string, handleFun func([]byte)) error {
 		handleFun(buf[:n])
 	}
 }
+
+func BufWrite(t *testing.T) error {
+	filePath := "./test.txt"
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	write := bufio.NewWriter(file)
+	for i := 0; i < 5; i++ {
+		write.WriteString("http://c.biancheng.net/golang/ \n")
+	}
+
+	//Flush将缓存的文件真正写入到文件中
+	write.Flush()
+
+	return nil
+}
+
+buffer写入的底层逻辑
