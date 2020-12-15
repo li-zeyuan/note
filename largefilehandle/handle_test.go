@@ -1,4 +1,4 @@
-package handle_test
+package largefilehandle
 
 import (
 	"bufio"
@@ -73,7 +73,7 @@ func BufHandle(filePath string, handleFun func([]byte)) error {
 	}
 }
 
-func BufWrite(t *testing.T) error {
+func BufWrite() error {
 	filePath := "./test.txt"
 	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
@@ -91,5 +91,3 @@ func BufWrite(t *testing.T) error {
 
 	return nil
 }
-
-buffer写入的底层逻辑
