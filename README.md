@@ -9,3 +9,4 @@
 - pg的Array问题
 - 短网址系统设计
 - RabbitMQ、Redis消息队列对比
+- Redis高可用、缓存
