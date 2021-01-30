@@ -15,4 +15,5 @@
 
 - 3、也可参考https://stackoverflow.com/questions/37282285/intellij-cannot-find-any-declarations
 
-  ![](.assets/IDE.png)
+  ![IDE](https://raw.githubusercontent.com/li-zeyuan/access/master/img/20210130112938.png)
+
