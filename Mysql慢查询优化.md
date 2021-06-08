@@ -21,13 +21,19 @@
 - 叶子节点按照索引的创建顺序保存
 - 访问索引按照col1->col2->col3的顺序，即联合索引创建顺序
 
-### count优化
+### count性能比较
 
-- todo
+- count(primary key)。遍历整个表，把主键值拿出来，累加；
+- count(1)。遍历整个表，但是不取值，累加；
+- count(非空字段)。遍历整个表，读出这个字段，累加；
+- count(可以为空的字段)。遍历整个表，读出这个字段，判断不为null累加；
+- count(*)。遍历整个表，做了优化，不取值，累加。
+```sql
+性能比较：count(*) = count(1) >= count(primary_key) >= count(非空字段) >= count(可以为空的字段)
+建议使用count(*)
+```
 
 ### group by优化
-
-- todo
 
 ##### Loose Index Scan（松散的索引扫描）
 
@@ -63,8 +69,19 @@
   - group by条件有索引＂间隙＂．如：`SELECT c1, c2, c3 FROM t1 WHERE c2 = 'a' GROUP BY c1, c3;`
   - group by条件不是最左前缀．如：`SELECT c1, c2, c3 FROM t1 WHERE c1 = 'a' GROUP BY c2, c3;`
 - 例子
+  - todo
 
-### district优化
+### distinct优化
+- distinct大多数条件下是跟group by等价的，如下面两个查询：
+```sql
+SELECT DISTINCT c1, c2, c3 FROM t1 WHERE c1 > const;
+SELECT c1, c2, c3 FROM t1 WHERE c1 > const GROUP BY c1, c2, c3;
+```
+- distinct的优化本质上是group by的优化
+
+### order by优化
+
+- todo
 
 ### 总结
 
@@ -76,6 +93,7 @@
 ### 参考
 
 - mysql文档：https://dev.mysql.com/doc/refman/5.7/en/
-
 - group by优化：https://dev.mysql.com/doc/refman/5.7/en/group-by-optimization.html
+- distinct优化：http://www.searchdoc.cn/rdbms/mysql/dev.mysql.com/doc/refman/5.7/en/distinct-optimization.com.coder114.cn.html
 - 索引数据结构和算法逻辑：http://blog.codinglabs.org/articles/theory-of-mysql-index.html
+- count性能比较：https://segmentfault.com/a/1190000019930046
