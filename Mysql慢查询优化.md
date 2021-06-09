@@ -1,4 +1,4 @@
-# Mysql查询优化
+# 	Mysql查询优化
 
 ### 背景
 
@@ -29,7 +29,7 @@
 - count(可以为空的字段)。遍历整个表，读出这个字段，判断不为null累加；
 - count(*)。遍历整个表，做了优化，不取值，累加。
 ```sql
-性能比较：count(*) = count(1) >= count(primary_key) >= count(非空字段) >= count(可以为空的字段)
+性能比较:count(*) = count(1) >= count(primary_key) >= count(非空字段) >= count(可以为空的字段)
 建议使用count(*)
 ```
 
@@ -53,13 +53,12 @@
 
   - 查询在一个表
   - group by遵循最左前缀，如`SELECT c1, c2 FROM t1 GROUP BY c1, c2; `
-  - 聚合函数只能是min( )和max( )，并且是指向同一列，如`SELECT MAX(c3), MIN(c3), c1, c2 FROM t1 WHERE c2 > *const* GROUP BY c1, c2; `
+    - ![d7b3c6ad2e8fcbd00bc210711bf708f1](https://raw.githubusercontent.com/li-zeyuan/access/master/img/d7b3c6ad2e8fcbd00bc210711bf708f1.png)
+  - 聚合函数只能是min( )和max( )，并且是指向同一列，如`SELECT MAX(c3), MIN(c3), c1, c2 FROM t1 WHERE c2 > const GROUP BY c1, c2; `
+    - ![8451fb6e6709650a4fa7912196a0b6f6](https://raw.githubusercontent.com/li-zeyuan/access/master/img/8451fb6e6709650a4fa7912196a0b6f6.png)
   - 若有其他where条件，必须是常数，MIN()或MAX() 函数的参数例外．如：`SELECT MAX(c3), MIN(c3), c1, c2 FROM t1 WHERE c2 > *const* GROUP BY c1, c2; `
   - 对于索引中的列，必须对整列值进行索引，而不仅仅是前缀。例如，与 `c1 VARCHAR(20), INDEX (c1(10))`．
 
-- 例子
-
-  - todo
 
 ##### Tight Index Scan（紧凑的索引扫描）
 
@@ -67,9 +66,9 @@
   - 没有满足松散索引扫描的条件时，仍然可以避免为`GROUP BY`查询创建临时表。
 - 满足条件：`idx(c1,c2,c3)`表上 的索引 `t1(c1,c2,c3,c4)`
   - group by条件有索引＂间隙＂．如：`SELECT c1, c2, c3 FROM t1 WHERE c2 = 'a' GROUP BY c1, c3;`
+    - ![f84460d8ed21e8196889aabfe65b6295](https://raw.githubusercontent.com/li-zeyuan/access/master/img/f84460d8ed21e8196889aabfe65b6295.png)
   - group by条件不是最左前缀．如：`SELECT c1, c2, c3 FROM t1 WHERE c1 = 'a' GROUP BY c2, c3;`
-- 例子
-  - todo
+    - ![e6bdac3686b5ad7f11cd3ac49d3f2240](https://raw.githubusercontent.com/li-zeyuan/access/master/img/e6bdac3686b5ad7f11cd3ac49d3f2240.png)
 
 ### distinct优化
 - distinct大多数条件下是跟group by等价的，如下面两个查询：
@@ -97,3 +96,5 @@ SELECT c1, c2, c3 FROM t1 WHERE c1 > const GROUP BY c1, c2, c3;
 - distinct优化：http://www.searchdoc.cn/rdbms/mysql/dev.mysql.com/doc/refman/5.7/en/distinct-optimization.com.coder114.cn.html
 - 索引数据结构和算法逻辑：http://blog.codinglabs.org/articles/theory-of-mysql-index.html
 - count性能比较：https://segmentfault.com/a/1190000019930046
+- order by优化：http://www.searchdoc.cn/rdbms/mysql/dev.mysql.com/doc/refman/5.7/en/order-by-optimization.com.coder114.cn.html#order-by-filesort-original
+- order by优化例子：https://juejin.cn/post/6844903638268117006
