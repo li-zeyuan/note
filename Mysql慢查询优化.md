@@ -13,7 +13,7 @@
 
 我们都知道联合索引遵循左前缀原则，这一特性其实是由其数据结构所决定的．index(col1, col2, col3)数据结构图：
 
-![](https://github.com/li-zeyuan/access/blob/master/img/unified_index_data_structure.png)
+![unified_index_data_structure (1)](https://raw.githubusercontent.com/li-zeyuan/access/master/img/unified_index_data_structure%20(1).png)
 
 联合索引数据结构特性：
 
