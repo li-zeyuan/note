@@ -61,11 +61,21 @@
   分区块编号：新生成的分区自增
   合并数次：合并一次加1
   ```
+##### ReplacingMergeTree
+- 合并分区时执行去重
+- ReplacingMergeTree(column)，保留column最大值
+- 以order by字段为依据做去重
+- 分区内去重
+##### SummingMergeTree
+- 合并分区时执行聚合
+- 以order by(column)为维度列，相当于group by(column)
+- SummingMergeTree(column),column必须为数字列，对column做聚合，其他字段保留第一行
+- 分区内聚合
 ### 索引
 - 参考：https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree
-##### 主键索引
+##### 主键索引（稀疏索引）
+##### 二级索引
 ##### 分区索引
-##### 跳数索引
 ### explain
 ### 副本表
 ### 分片
