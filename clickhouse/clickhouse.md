@@ -71,13 +71,36 @@
 - 以order by(column)为维度列，相当于group by(column)
 - SummingMergeTree(column),column必须为数字列，对column做聚合，其他字段保留第一行
 - 分区内聚合
+
+##### \*MergeTree与Replicated\*MergeTree区别
+
+- \*MergeTree数据同步依赖数据库同步机制，不依赖zookeeper
+- Replicated\*MergeTree依赖zookeeper
+- 参考：https://juejin.cn/post/6875235444909408263
+
 ### 索引
+
 - 参考：https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree
 ##### 主键索引（稀疏索引）
 ##### 二级索引
 ##### 分区索引
 ### explain
-### 副本表
+### 副本
+
+##### 副本表
+
+##### 副本同步原理
+
+- <img src="https://raw.githubusercontent.com/li-zeyuan/access/master/img/202210241830075.png" alt="Snipaste_2022-10-24_18-10-25" style="zoom:50%;" />
+- 1、client向某个server1发送写入请求
+- 2、server1写入本地
+- 3、同步operation log到zookeeper
+- 4、其他server监听到operation log变化并拉取operation log
+- 5、解析operation log，并从server1拉取数据
+- 总结：
+  - 1、谁处理client请求，谁负责。负责同步operation log数据到zookeeper
+  - 2、zookeeper不参与实质的data数据传输，只负责log同步
+
 ### 分片
+
 ### 常见问题
-### 
